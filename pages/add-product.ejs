@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head.ejs') %>
+  <body>
+    <script>
+      function addToProduct() {
+        console.log('handle add to product');
+      }
+    </script>
+    <%- include('partials/navigation.ejs') %>
+      <main>
+        <div class="container p-2 card mt-2 bg-light">
+          <form class="row g-3 needs-validation" novalidate>
+            <div class="col-md-4">
+              <label for="product_name" class="form-label"><strong>Name</strong></label>
+              <input type="text" class="form-control" required>
+              <div class="invalid-feedback">
+                Please enter a product name
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label for="product_price" class="form-label"><strong>Price</strong></label>
+              <input type="text" class="form-control" required>
+              <div class="invalid-feedback">
+                Please enter a product price
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label for="product_image" class="form-label"><strong>Image</strong></label>
+              <input type="url" class="form-control" id="product_image">
+            </div>
+            <div class="col-12">
+              <label for="product_description" class="form-label"><strong>Description</strong></label>
+              <textarea id="product_description" rows="3" class="form-control"></textarea>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary" onclick="handleAddProduct()"> <strong>Add Products</strong> </button>
+            </div>
+          </form>
+        </div>
+      </main>
+      <%- include('partials/footer.ejs') %>
+  </body>
+
+</html>

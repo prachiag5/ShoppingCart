@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head.ejs') %>
+
+    <body>
+        <%- include('partials/navigation.ejs') %>
+            <main>
+                <!-- Login 8 - Bootstrap Brain Component -->
+                <section class="bg-light p-3 p-md-4 p-xl-5">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-xxl-11">
+                                <div class="card border-light-subtle shadow-sm">
+                                    <div class="row g-0">
+                                        <div class="col-12 col-md-6">
+                                            <img class="img-fluid rounded-start w-100 h-100 object-fit-cover"
+                                                loading="lazy" src="/images/login-img.webp"
+                                                alt="Welcome back you've been missed!" />
+                                        </div>
+                                        <div class="col-12 col-md-6 d-flex align-items-center justify-content-center">
+                                            <div class="col-12 col-lg-11 col-xl-10">
+                                                <div class="card-body p-3 p-md-4 p-xl-5">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="mb-5">
+                                                                <div class="text-center">
+                                                                    <a href="#!">
+                                                                        <img src="/images/logo.png"
+                                                                            alt="BootstrapBrain Logo" width="175" />
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <form id="registerForm" action="/auth/register" method="POST">
+                                                        <div class="row gy-3 overflow-hidden">
+                                                            <div class="col-12">
+                                                                <div class="form-floating mb-3">
+                                                                    <input type="text" class="form-control"
+                                                                        name="username" id="username" placeholder="name"
+                                                                        required />
+                                                                    <label for="username"
+                                                                        class="form-label">UserName</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-floating mb-3">
+                                                                    <input type="email" class="form-control"
+                                                                        name="email" id="email"
+                                                                        placeholder="name@example.com" required />
+                                                                    <label for="email" class="form-label">Email</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-floating mb-3">
+                                                                    <input type="password" class="form-control"
+                                                                        name="password" id="password" value=""
+                                                                        placeholder="Password" required />
+                                                                    <label for="password"
+                                                                        class="form-label">Password</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="d-grid">
+                                                                    <button class="btn btn-dark btn-lg" type="submit">
+                                                                        Register User
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+            <%- include('partials/footer.ejs') %>
+                <!-- <script>document.getElementById('registerForm').addEventListener('submit', async function (e) {
+                        e.preventDefault();
+                        const username = document.getElementById('username').value;
+                        const email = document.getElementById('email').value;
+                        const password = document.getElementById('password').value;
+
+                        try {
+                            const response = await fetch('/auth/register', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ username, email, password })
+                            });
+
+                            const data = await response.json();
+                            if (response.ok) {
+                                window.location.href = '/login'; // Redirect to login page
+                            } else {
+                                console.log(data.message);
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                </script> -->
+    </body>
+
+</html>

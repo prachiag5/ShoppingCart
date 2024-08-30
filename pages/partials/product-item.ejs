@@ -1,0 +1,32 @@
+<div class="col-md-12 col-lg-4 mb-4 mb-lg-3">
+    <div class="card align-items-center" style="max-height: 490px;">
+        <div class="d-flex justify-content-between p-3 w-100">
+          <p class="lead mb-0">Available for today</p>
+          <div
+            class="bg-info rounded-circle d-flex align-items-center justify-content-center shadow-1-strong"
+            style="width: 35px; height: 35px;">
+            <p class="text-white mb-0 small"><%= product.promotion %></p>
+          </div>
+        </div>
+        <img src=<%= product.imageUrl %> class="card-img-top" style="max-width: 200px; height: 200px" alt="" />
+        <div class="card-body w-100">
+          <div class="d-flex justify-content-between">
+            <p class="small"><a href="#!" class="text-muted"><%= product.category %></a></p>
+            <p class="small text-danger"><s><%= product.price %></s>&#8377;</p>
+          </div>
+
+          <div class="d-flex justify-content-between mb-3">
+            <h5 class="mb-0 text-truncate"><%= product.title %></h5>
+            <h5 class="text-warning mb-0"><%= Math.floor(product.price + (Number(product.promotion.replace('%',''))/100)) %>&#8377;</h5>
+          </div>
+
+          <div class="d-flex justify-content-between mb-2">
+            <p class="text-muted mb-0">Available: <span class="fw-bold"><%= product.stock %></span></p>
+            <div class="ms-auto text-warning">
+              <%= product.count %>
+            </div>
+          </div>
+          <%- include('add-to-cart.ejs', {productId: product._id, title: product.title, price: product.price}) %>
+        </div>
+    </div>
+</div>

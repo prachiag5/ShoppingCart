@@ -1,0 +1,24 @@
+<header>
+    <script>
+        
+    </script>
+    <nav class="nav nav-pills flex-row bg-dark p-2 justify-content-between align-items-center">
+        <a class="nav-link <%= '/' === redirection ? 'logo__active' : 'logo' %>" href="/" aria-current="page">
+            <img src="/images/logo_dark.png" alt="Logo" height="56" />
+        </a>
+        <div class="w-25">
+            <div class="input-icons position-relative">
+              <i class="fa-solid fa-magnifying-glass position-absolute translate-bottom mt-2 ms-2 ps-1  text-secondary" aria-hidden="true"></i>
+              <input class="form-control ps-5" id="searchInput" type="text" placeholder="Search" onkeyup="handleSearchClick(event)">
+            </div>
+          </div>
+        <div class="d-flex flex-row align-items-center">
+            <% navigation.forEach(menu=> { %>
+                <a class="nav-link <%= menu.link === redirection ? 'active' : '' %>" href="<%= menu.link %>"
+                    aria-current="page">
+                    <%= menu.label %>
+                </a>
+                <% }) %>
+        </div>
+    </nav>
+</header>

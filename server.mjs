@@ -1,0 +1,62 @@
+import express from "express";
+import bp from "body-parser";
+import morgan from "morgan";
+import dotenv from 'dotenv';
+import session from 'express-session';
+import http from 'http';
+import { Server } from "socket.io";
+import { ensureAuthenticated } from "./middleware/authMiddleware.mjs";
+import { cartRouter } from "./routes/cart.mjs";
+import { productsRouter } from "./routes/products.mjs";
+import { authRouter } from "./routes/auth.mjs";
+import { pageRouter } from "./routes/page.mjs";
+import { mongoConnect } from "./database/database.mjs";
+
+const PORT = process.env.port || "4000";
+const localHost = "localhost";
+dotenv.config();
+const { urlencoded, json } = bp;
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
+app.use(express.static("public"));
+
+// Initialize template engine
+app.set("view engine", "ejs");
+app.set("views", "pages");
+
+// use middleware
+app.use(urlencoded({ extended: true }));
+app.use(json());
+app.use(morgan("dev"));
+
+// Sessions
+app.use(session({
+  secret: process.env.JWT_SECRET,
+  resave: false,
+  saveUninitialized: true,
+}));
+
+
+app.use('/cart', ensureAuthenticated, cartRouter);
+app.use('/product', ensureAuthenticated, productsRouter);
+app.use('/auth', authRouter);
+app.use('/register', authRouter);
+// Page router
+app.use('/', pageRouter);
+
+mongoConnect(() => {
+  app.listen(PORT, () => {
+    console.log(`Server is running on http://${localHost}:${PORT}`);
+  });
+})
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+});
+
+server.listen(4000, () => {
+  console.log('listening on *:4000');
+});

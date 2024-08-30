@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('partials/head.ejs') %>
+  <body>
+    <%- include('partials/navigation.ejs') %>
+    <main>
+        <div class="container py-5">
+            <div class="row mb-2">
+                <% data && data.length > 0 && data.forEach(product => { %>
+                    <%- include('partials/product-item.ejs', {product}) %>
+                <% }) %>
+            </div>
+        </div>
+    </main>
+    <%- include('partials/footer.ejs') %>
+  </body>
+</html>

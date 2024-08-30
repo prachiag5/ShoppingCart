@@ -1,0 +1,19 @@
+.logo__active {
+    opacity: 100%;
+}
+
+.logo {
+    opacity: 80%;
+}
+
+.checkout__image {
+    height: 100px;
+    width: auto;
+}
+
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('partials/head.ejs') %>
+  <body>
+    <%- include('partials/navigation.ejs') %>
+    <main>
+        <div class="container py-5">
+            <div class="row mb-2">
+                <% if (data.length > 0) { %>
+                    <% data.forEach(product => { %>
+                        <%- include('partials/product-item.ejs', {product}) %>
+                    <% }) %>
+                <% } else { %>
+                    <span class="text-warning"> <h2>No Products Founds</h2></span>
+                <% } %>
+                 
+            </div>
+        </div>
+    </main>
+    <%- include('partials/footer.ejs') %>
+  </body>
+</html>

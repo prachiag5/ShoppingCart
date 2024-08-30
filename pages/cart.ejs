@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head.ejs') %>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Your Shopping Cart</title>
+        <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            table,
+            th,
+            td {
+                border: 1px solid black;
+            }
+
+            th,
+            td {
+                padding: 10px;
+                text-align: left;
+            }
+
+            th {
+                background-color: #f2f2f2;
+            }
+
+            .total {
+                font-weight: bold;
+            }
+        </style>
+    </head>
+
+    <body>
+        <%- include('partials/navigation.ejs') %>
+            <main>
+                <h1>Your Shopping Cart</h1>
+
+                <% if (data && data.length> 0) { %>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% let grandTotal=0; %>
+                                <% data.forEach(item=> { %>
+                                    <tr>
+                                        <td>
+                                            <%= item.title %>
+                                        </td>
+                                        <td>$<%= item.price %>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <button class="btn btn-outline-secondary btn-sm"
+                                                onclick="updateQuantity('<%= item.productId %>', 'decrease')">-</button>
+                                                <input type="text" class="form-control text-center"
+                                                    value="<%= item.quantity %>" readonly>
+                                                <button class="btn btn-outline-secondary btn-sm"
+                                                onclick="updateQuantity('<%= item.productId %>', 'increase')">+</button>
+                                            </div>
+                                        </td>
+                                        <td>$<%= (Number(item.price) * item.quantity).toFixed(2) %>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger btn-sm"
+                                                onclick="deleteItem('<%= item.productId %>')">Delete</button>
+                                        </td>
+                                    </tr>
+                                    <% grandTotal +=Number(item.price) * item.quantity; %>
+                                        <% }) %>
+                                            <tr class="total">
+                                                <td colspan="4">Grand Total</td>
+                                                <td>$<%= grandTotal.toFixed(2) %>
+                                                </td>
+                                            </tr>
+                        </tbody>
+                    </table>
+                    <% } else { %>
+                        <p>Your cart is empty.</p>
+                        <% } %>
+            </main>
+            <script type="module">
+
+            </script>
+    </body>
+
+</html>
