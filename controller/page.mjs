@@ -11,6 +11,7 @@ const getDataForPage = (page, route, title, req) => {
     title,
     navigation,
   };
+  console.log("navigation", navigation);
   switch (page) {
     case REDIRECTION.SEARCH:
       const searchField = req.query.key;

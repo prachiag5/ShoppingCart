@@ -12,11 +12,11 @@ import { authRouter } from "./routes/auth.mjs";
 import { pageRouter } from "./routes/page.mjs";
 import { mongoConnect } from "./database/database.mjs";
 
+dotenv.config();
 const PORT = process.env.port || "4000";
 const localHost = "localhost";
-dotenv.config();
 const { urlencoded, json } = bp;
-
+console.log("jwt token", process.env.JWT_SECRET, process.env.MONGO_URI);
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
@@ -41,22 +41,39 @@ app.use(session({
 
 
 app.use('/cart', ensureAuthenticated, cartRouter);
-app.use('/product', ensureAuthenticated, productsRouter);
+app.use('/product', productsRouter);
 app.use('/auth', authRouter);
 app.use('/register', authRouter);
 // Page router
 app.use('/', pageRouter);
 
 mongoConnect(() => {
-  app.listen(PORT, () => {
-    console.log(`Server is running on http://${localHost}:${PORT}`);
-  });
+  // server.listen(PORT, () => {
+  //   console.log(`Server is running on http://${localHost}:${PORT}`);
+  // });
+  console.log("mongodb connected");
 })
 
 io.on('connection', (socket) => {
   console.log('a user connected');
+    // Listen for cart update events from clients
+    socket.on('updateCart', async ({ userId, cart }) => {
+      // Update cart in MongoDB
+      await Cart.findOneAndUpdate(
+        { userId },
+        { items: cart },
+        { upsert: true, new: true }
+      );
+  
+      // Emit updated cart to all clients (or specific users if needed)
+      io.emit('cartUpdated', { userId, cart });
+    });
+      // Handle client disconnects
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+  });
 });
 
-server.listen(4000, () => {
-  console.log('listening on *:4000');
+server.listen(PORT, () => {
+  console.log(`Server is running on http://${localHost}:${PORT}`);
 });

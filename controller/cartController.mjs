@@ -27,7 +27,9 @@ export const updateCart = async (req, res) => {
     const { productId, quantity } = req.body;
     try {
         const cart = await Cart.findOne({ userId: req.user._id });
+        console.log("updateCart cart", cart);
         const product = cart.items.find(p => p.productId.toString() === productId);
+        console.log("updateCart product", product);
         if (product) {
             product.quantity = quantity;
             await cart.save();
@@ -62,9 +64,9 @@ export const getCart = async (req, res) => {
       navigation,
     };
     try {
-        const cart = await Cart.findOne({ userId: req.user._id }).populate('items.productId');
+        const cart = await Cart.findOne({ userId: req.user._id });
         const cartData = req.session && req.session.cart ? req.session.cart  : cart.items;
-        console.log("cart", cartData);
+        console.log("cart", cart);
         res.render('cart', { data: cartData, ...pageObject });
         } catch (error) {
             res.status(500).send(error);
