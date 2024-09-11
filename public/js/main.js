@@ -1,4 +1,6 @@
 
+// Establish a connection to the server using Socket.IO
+const socket = io(); // This will automatically connect to the server
 function handleAddToCart(productId, title, price) {
   const options = {
     method: "POST",
@@ -7,7 +9,6 @@ function handleAddToCart(productId, title, price) {
     },
     body: JSON.stringify({ productId, quantity: 1, title, price }),
   };
-  //http://localhost:4000
   fetch(`/cart/add`, options)
     .then((response) => {
       if (!response.ok) {
@@ -26,18 +27,21 @@ function handleSearchClick(event) {
 
 function updateQuantity(productId, quantity, action) {
   if (action === "increase") {
-    quantity += 1;
+    quantity = Number(quantity) + 1;
   }
   else if (action === "decrease" && quantity > 0) {
     quantity -= 1;
   }
-  console.log("inside updateQuantity");
+  if (quantity === 0) {
+    deleteItem(productId);
+    return;
+  }
   fetch(`/cart/update`, {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ productId, action })
+      body: JSON.stringify({ productId, quantity })
   }).then(response => response.json())
     .then(data => {
         if (data.success) {
@@ -45,9 +49,7 @@ function updateQuantity(productId, quantity, action) {
         }
     });
 }
-function updateHandler(productId) {
-  console.log("inside update handler", productId);
-}
+
 function deleteItem(productId) {
   console.log("delete item", productId);
   fetch(`/cart/delete`, {
@@ -71,10 +73,8 @@ function displayCart() {
 }
 
 // Function to add an item to the cart
-function addItem() {
-  const newItem = { productId: `product${cart.length + 1}`, quantity: 1 };
-  cart.push(newItem);
-  socket.emit('updateCart', { userId, cart }); // Emit cart update to server
+function addItem(productId, title, price) {
+  socket.emit('addToCart', { productId, title, price });
 }
 
 // Listen for cart updates from the server
