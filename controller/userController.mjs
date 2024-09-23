@@ -19,6 +19,7 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
       const user = await User.findOne({ email });
+      console.log("found the user", user);
       if (!user || !user.matchPassword(password)) {
           return res.status(400).send('Invalid credentials');
       }

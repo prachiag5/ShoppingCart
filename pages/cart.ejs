@@ -73,7 +73,7 @@
                                         </td>
                                         <td>
                                             <button class="btn btn-danger btn-sm"
-                                                onclick="deleteItem('<%= item.productId %>')">Delete</button>
+                                                onclick="deleteProductItem('<%= item.productId %>', '<%= userId %>')">Delete</button>
                                         </td>
                                     </tr>
                                     <% grandTotal +=Number(item.price) * item.quantity; %>

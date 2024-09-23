@@ -53,6 +53,9 @@ export const getCart = async (req, res) => {
       title: "Cart",
       navigation,
     };
+    if (req.user && req.user._id) {
+        pageObject['userId'] = req.user._id;
+      }
     try {
         const cart = await Cart.findOne({ userId: req.user._id });
         console.log("cart", cart);

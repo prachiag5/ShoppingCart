@@ -11,7 +11,7 @@ import { productsRouter } from "./routes/products.mjs";
 import { authRouter } from "./routes/auth.mjs";
 import { pageRouter } from "./routes/page.mjs";
 import { mongoConnect } from "./database/database.mjs";
-
+import Cart from './models/cart.mjs';
 dotenv.config();
 const PORT = process.env.port || "4000";
 const localHost = "localhost";
@@ -57,7 +57,7 @@ mongoConnect(() => {
 
 io.on("connection", (socket) => {
   // Listen for cart update events from clients
-  socket.on("addToCart", async ({ productId, title, price }) => {
+  socket.on("addToCart", async ({ productId, title, price, userId }) => {
     console.log("add to cart");
     let cart = await Cart.findOne({ userId });
 
@@ -65,12 +65,12 @@ io.on("connection", (socket) => {
       // If no cart exists, create a new one
       cart = new Cart({ userId, items: [] });
     }
-
+    console.log("cart", cart.items);
     // Check if the product already exists in the cart
     const itemIndex = cart.items.findIndex(
-      (item) => item.productId === productId
+      (item) => item.productId.equals(productId)
     );
-
+    console.log("cart index", itemIndex);
     if (itemIndex > -1) {
       // If the item exists, increase the quantity
       cart.items[itemIndex].quantity += 1;
@@ -84,6 +84,17 @@ io.on("connection", (socket) => {
 
     // Emit the updated cart to the user
     socket.emit("cartUpdated", { userId, cart: cart.items });
+  });
+  socket.on("deleteCart", async ({ productId, userId }) => {
+    let cart = await Cart.findOne({ userId });
+    if (cart) {
+      // Find the item by productId and remove it
+      cart.items = cart.items.filter(item => item.productId.equals(productId));
+      await cart.save();
+
+    // Emit the updated cart to the user
+    socket.emit("cartUpdated", { userId, cart: cart.items });
+  }
   });
   socket.on("updateCart", async ({ userId, cart }) => {
     // Update cart in MongoDB

@@ -1,7 +1,8 @@
 
 // Establish a connection to the server using Socket.IO
 const socket = io(); // This will automatically connect to the server
-function handleAddToCart(productId, title, price) {
+function handleAddToCart(productId, title, price, userId) {
+  console.log("userId", userId);
   const options = {
     method: "POST",
     headers: {
@@ -73,17 +74,22 @@ function displayCart() {
 }
 
 // Function to add an item to the cart
-function addItem(productId, title, price) {
-  socket.emit('addToCart', { productId, title, price });
+function addItem(productId, title, price, userId) {
+  socket.emit('addToCart', { productId, title, price, userId });
+}
+
+function deleteProductItem(productId, userId) {
+  socket.emit('deleteCart', { productId, userId });
 }
 
 // Listen for cart updates from the server
-socket.on('cartUpdated', (data) => {
-  if (data.userId === userId) { // Check if the update is for the current user
-    cart = data.cart;
-    displayCart();
-    alert('Cart updated!');
-  }
+socket.on('cartUpdated', ({ userId, cart }) => {
+  // if (data.userId === userId) { // Check if the update is for the current user
+  //   cart = data.cart;
+  //   displayCart();
+  //   alert('Cart updated!');
+  // }
+  console.log("cart updated event");
 });
 
 // Initial display

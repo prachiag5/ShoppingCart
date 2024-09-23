@@ -7,8 +7,9 @@
         <div class="container py-5">
             <div class="row mb-2">
                 <% data && data.length > 0 && data.forEach(product => { %>
-                    <%- include('partials/product-item.ejs', {product}) %>
+                    <%- include('partials/product-item.ejs', {product, userId}) %>
                 <% }) %>
+                <%- userId %>
             </div>
         </div>
     </main>

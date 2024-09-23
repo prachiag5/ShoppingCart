@@ -12,6 +12,7 @@ const getDataForPage = (page, route, title, req) => {
     navigation,
   };
   console.log("navigation", navigation);
+  console.log("user id", req);
   switch (page) {
     case REDIRECTION.SEARCH:
       const searchField = req.query.key;
@@ -49,6 +50,9 @@ const getProducts = async (page, route, title, req, res) => {
     title,
     navigation
   };
+  if (req.user && req.user._id) {
+    pageObject['userId'] = req.user._id;
+  }
   try {
     const products = await Product.find();
     //console.log("products", products);
