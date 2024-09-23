@@ -62,11 +62,11 @@
                                         <td>
                                             <div class="input-group">
                                                 <button class="btn btn-outline-secondary btn-sm"
-                                                onclick="updateQuantity('<%= item.productId %>', '<%= item.quantity %>', 'decrease')">-</button>
+                                                onclick="updateItem('<%= item.productId %>', 'decrease', '<%= userId %>')">-</button>
                                                 <input type="text" class="form-control text-center"
                                                     value="<%= item.quantity %>" readonly>
                                                 <button class="btn btn-outline-secondary btn-sm"
-                                                onclick="updateQuantity('<%= item.productId %>', '<%= item.quantity %>', 'increase')">+</button>
+                                                onclick="updateItem('<%= item.productId %>', 'add', '<%= userId %>')">+</button>
                                             </div>
                                         </td>
                                         <td>$<%= (Number(item.price) * item.quantity).toFixed(2) %>

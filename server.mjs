@@ -96,14 +96,32 @@ io.on("connection", (socket) => {
     socket.emit("cartUpdated", { userId, cart: cart.items });
   }
   });
-  socket.on("updateCart", async ({ userId, cart }) => {
+  socket.on("updateCart", async ({ productId, action, userId }) => {
     // Update cart in MongoDB
-    await Cart.findOneAndUpdate(
-      { userId },
-      { items: cart },
-      { upsert: true, new: true }
-    );
-
+    let cart = await Cart.findOne({ userId });
+    if (!cart) {
+      cart = new Cart({ userId, items: [] });
+    }
+    const itemIndex = cart.items.findIndex((item) => item.productId.equals(productId));
+    if (action === 'add') {
+      if (itemIndex > -1) {
+        // If the item exists, increase the quantity
+        cart.items[itemIndex].quantity += 1;
+      } else {
+        // If the item doesn't exist, add it with quantity 1
+        cart.items.push({ productId, quantity: 1 });
+      }
+    }
+    else if (action === 'decrease') {
+      if (itemIndex > -1) {
+        // Decrease the quantity, and if it reaches 0, remove the item
+        cart.items[itemIndex].quantity -= 1;
+        if (cart.items[itemIndex].quantity <= 0) {
+          cart.items.splice(itemIndex, 1);
+        }
+      }
+    }
+    await cart.save();
     // Emit updated cart to all clients (or specific users if needed)
     io.emit("cartUpdated", { userId, cart });
   });

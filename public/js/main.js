@@ -77,7 +77,9 @@ function displayCart() {
 function addItem(productId, title, price, userId) {
   socket.emit('addToCart', { productId, title, price, userId });
 }
-
+function updateItem(productId, action, userId) {
+  socket.emit('updateCart', { productId, action, userId });
+}
 function deleteProductItem(productId, userId) {
   socket.emit('deleteCart', { productId, userId });
 }
